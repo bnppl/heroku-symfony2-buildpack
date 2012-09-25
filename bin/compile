@@ -38,6 +38,20 @@ PHP_URL="https://s3.amazonaws.com/php-lp/php-$PHP_VERSION.tar.gz"
 echo "-----> Bundling PHP version $PHP_VERSION"
 curl --silent --max-time 60 --location "$PHP_URL" | tar xz
 
+# PHP Extensions
+cp php-5.4.4/libs/libphp5.so /app/apache/modules/
+cp /usr/lib64/libmysqlclient.so /app/php/ext/
+cp /usr/lib64/libmysqlclient.so.18 /app/php/ext/
+cp /usr/lib/libmcrypt.so /app/php/ext/
+cp /usr/lib/libmcrypt.so.4 /app/php/ext/
+wget http://pecl.php.net/get/APC
+tar -zxvf APC
+cd APC-3.1.10
+/app/php/bin/phpize
+./configure --enable-apc --enable-apc-mmap --with-php-config=/app/php/bin/php-config
+make
+make install
+
 # update config files
 cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
 cp $LP_DIR/conf/php.ini php

@@ -60,6 +60,8 @@ if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
   export GIT_DIR=$GIT_DIR_ORGI
 else
   echo `pwd`
+  echo `ls -l`
+  echo `ls www/ -l`
 fi
 
 cat >>boot.sh <<EOF

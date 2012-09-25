@@ -46,6 +46,8 @@ cp $LP_DIR/conf/php.ini php
 mkdir -p bin
 ln -s /app/php/bin/php bin/php
 
+export set PATH=$PATH:/app/php/bin
+
 echo `which php`
 
 echo "does it output this?"

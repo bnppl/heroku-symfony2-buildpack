@@ -1,37 +1,5 @@
-#!/usr/bin/env bash
-# bin/compile <build-dir> <cache-dir>
-
-# fail fast
-set -e
-
-# config
-APACHE_VERSION="2.2.22"
-APACHE_PATH="apache"
-PHP_VERSION="5.3.10"
-PHP_PATH="php"
-
-BIN_DIR=$(dirname $0)
-BUILD_DIR=$1
-CACHE_DIR=$2
-LP_DIR=`cd $(dirname $0); cd ..; pwd`
-
-# include .files when moving things around
-shopt -s dotglob
-
-cd $BUILD_DIR
-
-# move app things to www
-mkdir -p $CACHE_DIR/www
-mv * $CACHE_DIR/www
-mv $CACHE_DIR/www .
-
-# keep Procfile
-if [ -f www/Procfile ]; then
-  mv www/Procfile .
-fi
-
 # apache
-mkdir /app
+#mkdir /app
 wget http://apache.cyberuse.com//httpd/httpd-2.2.19.tar.gz
 tar xvzf httpd-2.2.19.tar.gz
 cd httpd-2.2.19
@@ -69,50 +37,3 @@ echo '2.2.19' > apache/VERSION
 tar -zcvf apache.tar.gz apache
 echo '5.3.6' > php/VERSION
 tar -zcvf php.tar.gz php
-
-# update config files
-cp $LP_DIR/conf/httpd.conf $APACHE_PATH/conf
-cp $LP_DIR/conf/php.ini php
-
-# make php available on bin
-mkdir -p bin
-ln -s /app/php/bin/php bin/php
-
-export set PATH=$PATH:$BUILD_DIR/php/bin
-
-apt-get install php5-dev php-pear
-
-# check if we have Composer dependencies and vendors are not bundled
-if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
-  GIT_DIR_ORIG=$GIT_DIR
-  unset GIT_DIR
-  echo "-----> Installing Composer dependencies"
-  COMPOSER_URL="http://getcomposer.org/composer.phar"
-  curl --silent --max-time 60 --location "$COMPOSER_URL" > www/composer.phar
-  cd www
-  LD_LIBRARY_PATH=$BUILD_DIR/php/ext $BUILD_DIR/php/bin/php composer.phar install --prefer-source -v
-  cd $BUILD_DIR
-  rm www/composer.phar
-  export GIT_DIR=$GIT_DIR_ORGI
-else
-  echo "Please check if you have a composer.json file in the root, and that your vendor directory is not committed"
-fi
-
-cat >>boot.sh <<EOF
-for var in \`env|cut -f1 -d=\`; do
-  echo "PassEnv \$var" >> /app/apache/conf/httpd.conf;
-done
-touch /app/apache/logs/error_log
-touch /app/apache/logs/access_log
-tail -F /app/apache/logs/error_log &
-tail -F /app/apache/logs/access_log &
-export LD_LIBRARY_PATH=/app/php/ext
-export PHP_INI_SCAN_DIR=/app/www
-echo "Launching apache"
-exec /app/apache/bin/httpd -DNO_DETACH
-EOF
-
-chmod +x boot.sh
-
-# clean the cache
-rm -rf $CACHE_DIR/*

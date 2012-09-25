@@ -57,7 +57,9 @@ if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
   LD_LIBRARY_PATH=$BUILD_DIR/php/ext $BUILD_DIR/php/bin/php composer.phar install --prefer-source -v
   cd $BUILD_DIR
   rm www/composer.phar
-  export GIT_DIR=$GIT_DIR_ORIG
+  export GIT_DIR=$GIT_DIR_ORGI
+else
+  echo `pwd`
 fi
 
 cat >>boot.sh <<EOF

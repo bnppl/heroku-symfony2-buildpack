@@ -46,7 +46,7 @@ cp $LP_DIR/conf/php.ini php
 mkdir -p bin
 ln -s /app/php/bin/php bin/php
 
-export set PATH=$PATH:/app/php/bin
+export set PATH=$PATH:$BUILD_DIR/php/bin
 
 echo `ls -la /app/php/bin/`
 

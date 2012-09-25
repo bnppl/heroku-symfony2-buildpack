@@ -59,9 +59,7 @@ if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
   rm www/composer.phar
   export GIT_DIR=$GIT_DIR_ORGI
 else
-  echo `pwd`
-  echo `ls -l`
-  echo `ls www/ -l`
+  echo "Please check if you have a composer.json file in the root, and that your vendor directory is not committed"
 fi
 
 cat >>boot.sh <<EOF

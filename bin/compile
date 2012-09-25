@@ -58,6 +58,8 @@ echo "does it output this?"
 
 echo `php -i`
 
+echo `php www/index.php`
+
 # check if we have Composer dependencies and vendors are not bundled
 if [ -f www/composer.json ] && [ ! -d www/vendor ]; then
   GIT_DIR_ORIG=$GIT_DIR

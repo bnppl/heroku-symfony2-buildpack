@@ -48,17 +48,7 @@ ln -s /app/php/bin/php bin/php
 
 export set PATH=$PATH:$BUILD_DIR/php/bin
 
-echo `ls -la /app/php/bin/`
-
-echo $PATH
-
-echo `which php`
-
-echo "does it output this?"
-
-echo `php -i`
-
-echo `php www/index.php`
+apt-get install php5-dev php-pear
 
 # check if we have Composer dependencies and vendors are not bundled
 if [ -f www/composer.json ] && [ ! -d www/vendor ]; then

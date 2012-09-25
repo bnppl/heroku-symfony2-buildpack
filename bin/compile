@@ -48,7 +48,7 @@ ln -s /app/php/bin/php bin/php
 
 export set PATH=$PATH:$BUILD_DIR/php/bin
 
-
+echo `php -i`
 
 # check if we have Composer dependencies and vendors are not bundled
 if [ -f www/composer.json ] && [ ! -d www/vendor ]; then

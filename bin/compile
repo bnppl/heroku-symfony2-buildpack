@@ -48,6 +48,10 @@ ln -s /app/php/bin/php bin/php
 
 export set PATH=$PATH:/app/php/bin
 
+echo `ls -la /app/php/bin/`
+
+echo $PATH
+
 echo `which php`
 
 echo "does it output this?"

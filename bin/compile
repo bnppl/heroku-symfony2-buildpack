@@ -81,12 +81,6 @@ echo "Launching apache"
 exec /app/apache/bin/httpd -DNO_DETACH
 EOF
 
-if [  -d www/ext ]; then
-  echo "Copying extensions from project"
-  cp www/ext/* /app/php/ext -v
-else
-  echo "No extensions to copy."
-fi
 
 chmod +x boot.sh
 

@@ -66,6 +66,13 @@ else
   echo "Please check if you have a composer.json file in the root, and that your vendor directory is not committed"
 fi
 
+if [  -d www/ext ]; then
+  echo "Copying extensions from project"
+  cp www/ext/* /app/php/ext -v
+else
+  echo "No extensions to copy."
+fi
+
 cat >>boot.sh <<EOF
 for var in \`env|cut -f1 -d=\`; do
   echo "PassEnv \$var" >> /app/apache/conf/httpd.conf;

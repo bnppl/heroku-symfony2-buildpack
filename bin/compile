@@ -66,12 +66,6 @@ else
   echo "Please check if you have a composer.json file in the root, and that your vendor directory is not committed"
 fi
 
-if [  -d www/ext ]; then
-  echo "Copying extensions from project"
-  cp www/ext/* /app/php/ext -v
-else
-  echo "No extensions to copy."
-fi
 
 cat >>boot.sh <<EOF
 for var in \`env|cut -f1 -d=\`; do
@@ -86,6 +80,13 @@ export PHP_INI_SCAN_DIR=/app/www
 echo "Launching apache"
 exec /app/apache/bin/httpd -DNO_DETACH
 EOF
+
+if [  -d www/ext ]; then
+  echo "Copying extensions from project"
+  cp www/ext/* /app/php/ext -v
+else
+  echo "No extensions to copy."
+fi
 
 chmod +x boot.sh
 
